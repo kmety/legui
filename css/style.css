@@ -1,0 +1,6 @@
+.btn-secondary:hover,
+.btn-secondary:focus {
+    color: #fff;
+    background-color: #333;
+    border-color: transparent;
+}
