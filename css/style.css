@@ -1,6 +1,111 @@
-.btn-secondary:hover,
-.btn-secondary:focus {
-    color: #fff;
-    background-color: #333;
-    border-color: transparent;
+html {
+    height: auto;
+}
+
+body {
+    background: url("../images/bg2.jpeg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: top;
+    margin-bottom: 60px;
+    margin-top: 60px;
+}
+
+.card-block.header {
+    padding: 3.0rem;
+}
+
+.container {
+    background: rgba(240,240,240,0.95);
+}
+
+.main {
+    min-height: 100%;
+}
+
+.container>.card {
+    background: transparent;
+    border: none;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+.card {}
+
+.card-block {
+    text-align: center;
+}
+
+.card-header {}
+
+.btn-secondary {
+    /*    background: #444;*/
+}
+
+.card-block {
+    padding: 0.6rem 0.8rem;
+}
+
+.card-block > .card {
+    border-color: #CCC;
+}
+
+.card-block > .card > .card-header {
+    padding: 0.4rem 0.9rem;
+}
+
+.card-block > .card > .collapse > .card-block {
+    padding: 0.6rem 0.8rem;
+}
+
+.card-block > .card > .collapsing > .card-block {
+    padding: 0.6rem 0.8rem;
+}
+
+
+/* navigation */
+
+.navigation {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: none;
+    height: 60px;
+    z-index: 2;
+}
+
+.navigation > .container {
+    height: 60px;
+    background: #FFF;
+} 
+.navigation > .container > ul {
+    vertical-align: middle;
+}
+
+
+/* footer */
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: none;
+    height: 60px;
+}
+
+.footer > .container {
+    height: 60px;
+    background: #FFF;
+}
+
+.maintained {
+    width: 100%;
+    text-align: center
+}
+
+.footer .row {
+    padding: 0.1rem;
 }
