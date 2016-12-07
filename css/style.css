@@ -3,7 +3,9 @@ html {
 }
 
 body {
-    background: url("../images/bg2.jpeg");
+/*    background: url("../images/bg-5472x3648.jpg");*/
+    background: url("../images/bg-1920x1080.jpg");
+/*    background: url("../images/bg2.jpeg");*/
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
