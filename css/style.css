@@ -179,7 +179,7 @@ h1 {
     padding: 10px 10px;
 }
 
-.nodecor, .nodecor:hover {
+.nodecor, .nodecor:hover, .nodecor:focus {
     text-decoration: none;
     color: inherit;
 }
