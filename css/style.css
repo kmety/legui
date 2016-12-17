@@ -18,8 +18,15 @@ body {
     padding: 3.0rem;
 }
 
+.examples {
+    background: rgba(255,255,255,1) !important; 
+}
+
 .container {
     background: rgba(255, 255, 255, 0.05);
+    border-width: 1px;
+    border-color: lightgray;
+    border-style: solid;
 }
 
 .section {
