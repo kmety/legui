@@ -1,12 +1,7 @@
 function loadmd(path, divId) {
-    console.log(path);
-    console.log(divId);
-    console.log($('#' + divId));
-    var md_content;
     $("#" + divId).load(path);
     $.get(path, function (result) {
         var html_content = markdown.toHTML(result);
-        console.log(html_content);
         $('#' + divId).html(unescapeHtml(html_content), 'gruber');
     });
 }
