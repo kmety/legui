@@ -3,15 +3,17 @@
 <head>
     <meta charset="utf-8">
     <title>LEGUI by Liquid Engine</title>
-    <link rel="stylesheet" href="../bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="icon" href="../favicon.png">
-    
-    
+    <link rel="stylesheet" href="bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/md.css">
+    <link rel="icon" href="favicon.png">
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
-    <script src="../bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
-    <script src="../js/markdown/markdown.js"></script>
+    <script src="bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+    <script src="js/markdown/markdown.js"></script>
+    <script src="js/loadmd.js"></script>
     <script>
         $('a').click(function () {
             $('html, body').animate({
@@ -20,7 +22,6 @@
             return false;
         });
     </script>
-
     <!-- google analytics -->
     <script>
         (function (i, s, o, g, r, a, m) {
@@ -49,22 +50,22 @@
                         <td class="align-middle">
                             <ul class="nav nav-inline">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="">Home</a>
+                                    <a class="nav-link" href="./">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="examples/">Examples</a>
+                                    <a class="nav-link" href="examples.html">Examples</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="docs/">Examples</a>
+                                    <a class="nav-link" href="docs.html">Examples</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" href="authors/">Authors</a>
+                                    <a class="nav-link disabled" href="authors.html">Authors</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link  disabled" href="contributors/">Contributors</a>
+                                    <a class="nav-link  disabled" href="contributors.html">Contributors</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/#s_c">Support or Contact</a>
+                                    <a class="nav-link" href="index.html/#s_c">Support or Contact</a>
                                 </li>
                                 <li class="nav-item">
                                     <div class="dropdown">
@@ -84,13 +85,22 @@
         </div>
     </div>
     <div class="container main">
-        <div class="row main">
+        <div class="row main" style="background: white;">
             <div id="content1" class="anchor"></div>
+            <div class="md-container">
+                <div id="test_md"></div>
+            </div>
+            <script type="text/javascript">
+                loadmd('./docs/test.md', 'test_md')
+            </script>
+
         </div>
+        <!--
         <div class="hr"></div>
-        <div class="row main section">
+        <div class="row section">
             <div id="content2" class="anchor"></div>
         </div>
+-->
     </div>
     <div class="footer">
         <div class="container border">
