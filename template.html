@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8">
     <title>LEGUI by Liquid Engine</title>
-    <link rel="stylesheet" href="bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="favicon.png">
-    
-    
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
-    <script src="bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <script>
-        $('a').click(function () {
+        $('a').click(function() {
             $('html, body').animate({
                 scrollTop: $($(this).attr('href')).offset().top
             }, 300);
@@ -22,9 +22,9 @@
 
     <!-- google analytics -->
     <script>
-        (function (i, s, o, g, r, a, m) {
+        (function(i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
+            i[r] = i[r] || function() {
                 (i[r].q = i[r].q || []).push(arguments)
             }, i[r].l = 1 * new Date();
             a = s.createElement(o),
@@ -40,65 +40,69 @@
 </head>
 
 <body>
-    <div id="nav" class="navigation"></div>
-    <script type="text/javascript"> $('#nav').load("template/header.html");</script>
-    
-    <div class="container main">
-        <div class="row main">
-            <div id="home" class="anchor"></div>
-            <div class="vert">
-                <div class="card wrap fh bgmain">
-                    <div class="card-block header text-xs-center ">
-                        <h1 class="title"><a class="nodecor" href="https://github.com/LiquidEngine/legui">LEGUI</a></h1>
-                        <h5 class="card-subtitle text-muted">
-                            Easy Java GUI library for <a class="card-link" href="https://www.lwjgl.org/">LWJGL 3</a> users
-                        </h5>
+    <div class="wrapper">
+        <div id="nav" class="navigation"></div>
+        <script type="text/javascript">
+            $('#nav').load("template/header.html");
+        </script>
+
+        <div class="container main">
+            <div class="row fh">
+                <div class="vert">
+                    <div class="card wrap fh bgmain">
+                        <div class="card-block header text-xs-center ">
+                            <h1 class="title"><a class="nodecor" href="https://github.com/LiquidEngine/legui">LEGUI</a></h1>
+                            <h5 class="card-subtitle text-muted">
+                                Easy Java GUI library for <a class="card-link" href="https://www.lwjgl.org/">LWJGL 3</a> users
+                            </h5>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="hr"></div>
-        <div class="row main section">
-            <div id="s_c" class="anchor"></div>
-            <div class="contacts">
-                <div class="card">
-                    <div class="card-block">
-                        <h4 class="card-title">Contacts</h4>
-                        <div class="row">
-                            <div class="discord social">
-                                <a href="https://discord.gg/6wfqXpJ" target="_blank">
-                                    <img src="images/social/discord/discord-black.png" class="img" />
-                                </a>
+            <div class="hr"></div>
+            <div class="row fh section">
+                <div class="contacts">
+                    <div class="card">
+                        <div class="card-block">
+                            <h4 class="card-title">Contacts</h4>
+                            <div class="row">
+                                <div class="discord social">
+                                    <a href="https://discord.gg/6wfqXpJ" target="_blank">
+                                        <img src="images/social/discord/discord-black.png" class="img" />
+                                    </a>
+                                </div>
+                                <div class="twitter social">
+                                    <a href="https://twitter.com/ShchAlexander" target="_blank">
+                                        <img src="images/social/twitter/twitter.png" class="img" />
+                                    </a>
+                                </div>
+                                <div class="github social">
+                                    <a href="https://github.com/ShchAlexander" target="_blank">
+                                        <img src="images/social/github/GitHub.png" class="img" />
+                                    </a>
+                                </div>
                             </div>
-                            <div class="twitter social">
-                                <a href="https://twitter.com/ShchAlexander" target="_blank">
-                                    <img src="images/social/twitter/twitter.png" class="img" />
-                                </a>
-                            </div>
-                            <div class="github social">
-                                <a href="https://github.com/ShchAlexander" target="_blank">
-                                    <img src="images/social/github/GitHub.png" class="img" />
-                                </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="support">
+                    <div class="card">
+                        <div class="card-block">
+                            <h4 class="card-title">If you want to support my project you can use this form.</h4>
+                            <div class="row">
+                                <iframe src="https://funding.webmoney.ru/widgets/horizontal/62bc1e73-e9be-40a8-93bd-c213e075dc7b?hs=1&sum=5" width="468" height="150" scrolling="no" style="border:none;"></iframe>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="support">
-                <div class="card">
-                    <div class="card-block">
-                        <h4 class="card-title">If you want to support my project you can use this form.</h4>
-                        <div class="row">
-                            <iframe src="https://funding.webmoney.ru/widgets/horizontal/62bc1e73-e9be-40a8-93bd-c213e075dc7b?hs=1&sum=5" width="468" height="150" scrolling="no" style="border:none;"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
+        <div id="foo" class="footer"></div>
+        <script type="text/javascript">
+            $('#foo').load("template/footer.html");
+        </script>
     </div>
-    
-    <div id="foo" class="footer"></div>
-    <script type="text/javascript"> $('#foo').load("template/footer.html");</script>
 </body>
 
 </html>

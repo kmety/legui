@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>LEGUI by Liquid Engine</title>
-    <link rel="stylesheet" href="bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/md.css">
     <link rel="icon" href="favicon.png">
@@ -11,7 +11,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
-    <script src="bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/markdown/markdown.js"></script>
     <script src="js/loadmd.js"></script>
     <script>
@@ -42,11 +42,12 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <div id="nav" class="navigation"></div>
     <script type="text/javascript"> $('#nav').load("template/header.html");</script>
     
     <div class="container main">
-        <div class="row main" style="background: white;">
+        <div class="row fh" style="background: white;">
             <div id="content1" class="anchor"></div>
             <div class="md-container">
                 <div id="test_md"></div>
@@ -66,6 +67,7 @@
     
     <div id="foo" class="footer"></div>
     <script type="text/javascript"> $('#foo').load("template/footer.html");</script>
+    </div>
 </body>
 
 </html>
