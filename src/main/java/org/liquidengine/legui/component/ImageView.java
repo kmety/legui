@@ -8,6 +8,8 @@ import org.liquidengine.legui.image.Image;
 import org.liquidengine.legui.util.ColorConstants;
 
 /**
+ * This class represents image view component.
+ * <p>
  * Created by Shcherbin Alexander on 9/22/2016.
  */
 public class ImageView extends Component {

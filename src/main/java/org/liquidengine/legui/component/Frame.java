@@ -16,17 +16,30 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Created by Aliaksandr_Shcherbin on 12/13/2016.
+ * The base of LEGUI ui. Represents window frame.
+ * Used to hold layers and.
+ * <p>
+ * Created by Shcherbin Alexander on 12/13/2016.
  */
 public class Frame {
+    /**
+     * Default layer which used to hold all of the default components.
+     */
     protected Layer componentLayer;
+    /**
+     * List of user-defined layers such as popups and etc.
+     */
     protected List<Layer> layers = SetUniqueList.setUniqueList(new CopyOnWriteArrayList<>());
+    /**
+     * Default layer which used to hold tooltips.
+     */
     protected Layer tooltipLayer;
 
-    public Frame() {
-        initialize();
-    }
-
+    /**
+     * Frame constructor, initialize layers with specified width and height.
+     * @param width initial width
+     * @param height initial height
+     */
     public Frame(float width, float height) {
         initialize();
         for (Layer layer : getAllLayers()) {

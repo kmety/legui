@@ -4,7 +4,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.joml.Vector2f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -77,7 +80,7 @@ public abstract class ComponentContainer extends Component {
      * Returns count of child components.
      *
      * @return count of child components.
-     * @see Set#size()
+     * @see List#size()
      */
     public int componentsCount() {
         return components.size();
@@ -87,7 +90,7 @@ public abstract class ComponentContainer extends Component {
      * Returns true if container contains no elements.
      *
      * @return true if container contains no elements.
-     * @see Set#isEmpty()
+     * @see List#isEmpty()
      */
     public boolean isContainerEmpty() {
         return components.isEmpty();
@@ -98,7 +101,7 @@ public abstract class ComponentContainer extends Component {
      *
      * @param component component to check.
      * @return true if container contains specified component.
-     * @see Set#contains(Object)
+     * @see List#contains(Object)
      */
     public boolean containsComponent(Component component) {
         return components.contains(component);
@@ -109,7 +112,7 @@ public abstract class ComponentContainer extends Component {
      * The elements are returned in no particular order.
      *
      * @return an iterator over the elements in this container.
-     * @see Set#iterator()
+     * @see List#iterator()
      */
     public Iterator<Component> containerIterator() {
         return components.iterator();
@@ -120,7 +123,7 @@ public abstract class ComponentContainer extends Component {
      *
      * @param component component to add.
      * @return true if component is added.
-     * @see Set#add(Object)
+     * @see List#add(Object)
      */
     public boolean addComponent(Component component) {
         if (component == null || component == this || components.contains(component)) return false;
@@ -133,7 +136,7 @@ public abstract class ComponentContainer extends Component {
      *
      * @param components components nodes to add.
      * @return true if added.
-     * @see Set#addAll(Collection)
+     * @see List#addAll(Collection)
      */
     public boolean addAllComponents(Collection<? extends Component> components) {
         if (components != null) {
@@ -169,7 +172,7 @@ public abstract class ComponentContainer extends Component {
      *
      * @param component component to remove.
      * @return true if removed.
-     * @see Set#remove(Object)
+     * @see List#remove(Object)
      */
     public boolean removeComponent(Component component) {
         if (component.parent != null && component.parent == this && components.contains(component)) {
@@ -183,7 +186,7 @@ public abstract class ComponentContainer extends Component {
      * Used to remove components.
      *
      * @param components components to remove.
-     * @see Set#removeAll(Collection)
+     * @see List#removeAll(Collection)
      */
     public void removeAllComponents(Collection<? extends Component> components) {
         components.forEach(compo -> compo.parent = null);
@@ -199,7 +202,7 @@ public abstract class ComponentContainer extends Component {
      *
      * @param filter a predicate which returns true for elements to be removed.
      * @return true if any components were removed.
-     * @see Set#removeIf(Predicate)
+     * @see List#removeIf(Predicate)
      */
     public boolean removeComponentIf(Predicate<? super Component> filter) {
         components.stream().filter(filter).forEach(compo -> compo.parent = null);
@@ -209,7 +212,7 @@ public abstract class ComponentContainer extends Component {
     /**
      * Used to remove all child components from container.
      *
-     * @see Set#clear()
+     * @see List#clear()
      */
     public void clearComponents() {
         components.forEach(compo -> compo.parent = null);
@@ -221,7 +224,7 @@ public abstract class ComponentContainer extends Component {
      *
      * @param components components collection to check.
      * @return true if this ComponentContainer contains all of the elements of the specified collection.
-     * @see Set#containsAll(Collection)
+     * @see List#containsAll(Collection)
      */
     public boolean containerContainsAll(Collection<?> components) {
         return this.components.containsAll(components);
@@ -231,7 +234,7 @@ public abstract class ComponentContainer extends Component {
      * Returns a sequential Stream with this collection as its source.
      *
      * @return a sequential Stream with this collection as its source.
-     * @see Set#stream()
+     * @see List#stream()
      */
     public Stream<Component> componentStream() {
         return components.stream();
@@ -242,7 +245,7 @@ public abstract class ComponentContainer extends Component {
      * It is allowable for this method to return a sequential stream.
      *
      * @return possibly parallel Stream with this collection as its source.
-     * @see Set#parallelStream()
+     * @see List#parallelStream()
      */
     public Stream<Component> componentParallelStream() {
         return components.parallelStream();
@@ -261,9 +264,6 @@ public abstract class ComponentContainer extends Component {
     /**
      * Used to retrieve child components as {@link List}
      * <p>
-     * <p>
-     * <span style="color:red">NOTE: this method returns {@link List} of components when components stored as {@link Set}</span>
-     *
      * @return list of child components.
      */
     public List<Component> getComponents() {

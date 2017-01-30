@@ -9,6 +9,7 @@ import org.liquidengine.legui.event.SystemEvent;
 import org.liquidengine.legui.listener.SystemEventListener;
 import org.liquidengine.legui.listener.SystemEventListenerProvider;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,10 +52,13 @@ public class SystemEventProcessor {
             if (preprocessor != null) preprocessor.process(event, context);
 
             List<Layer> allLayers = frame.getAllLayers();
+            Collections.reverse(allLayers);
+
             for (Layer layer : allLayers) {
                 Layer.LayerContainer layerContainer = layer.getContainer();
                 SystemEventListener  listener       = layerContainer.getSystemEventListeners().getListener(event.getClass());
                 if (listener != null) listener.update(event, layerContainer, context);
+                if (!layer.isPermeable()) return;
             }
 
             SystemEventPostprocessor postprocessor = provider.getPostprocessor(event.getClass());
