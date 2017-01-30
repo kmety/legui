@@ -1,6 +1,7 @@
 package org.liquidengine.legui.processor;
 
 import org.liquidengine.legui.component.Frame;
+import org.liquidengine.legui.component.Layer;
 import org.liquidengine.legui.context.ILeguiCallbackKeeper;
 import org.liquidengine.legui.context.LeguiContext;
 import org.liquidengine.legui.context.LeguiSystemEventQueue;
@@ -8,15 +9,17 @@ import org.liquidengine.legui.event.SystemEvent;
 import org.liquidengine.legui.listener.SystemEventListener;
 import org.liquidengine.legui.listener.SystemEventListenerProvider;
 
+import java.util.List;
+
 /**
  * Created by Shcherbin Alexander on 9/19/2016.
  */
 public class SystemEventProcessor {
 
-    private final Frame frame;
-    private final LeguiContext context;
+    private final Frame                 frame;
+    private final LeguiContext          context;
     private final LeguiSystemEventQueue leguiEventQueue;
-    private final ILeguiCallbackKeeper callbackKeeper;
+    private final ILeguiCallbackKeeper  callbackKeeper;
 
     public SystemEventProcessor(LeguiContext context, ILeguiCallbackKeeper callbackKeeper) {
         this.frame = context.getFrame();
@@ -47,8 +50,12 @@ public class SystemEventProcessor {
             SystemEventPreprocessor preprocessor = provider.getPreprocessor(event.getClass());
             if (preprocessor != null) preprocessor.process(event, context);
 
-            SystemEventListener listener = frame.getSystemEventListeners().getListener(event.getClass());
-            if (listener != null) listener.update(event, frame, context);
+            List<Layer> allLayers = frame.getAllLayers();
+            for (Layer layer : allLayers) {
+                Layer.LayerContainer layerContainer = layer.getContainer();
+                SystemEventListener  listener       = layerContainer.getSystemEventListeners().getListener(event.getClass());
+                if (listener != null) listener.update(event, layerContainer, context);
+            }
 
             SystemEventPostprocessor postprocessor = provider.getPostprocessor(event.getClass());
             if (postprocessor != null) postprocessor.process(event, context);

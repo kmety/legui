@@ -15,11 +15,11 @@ import org.liquidengine.legui.listener.SystemEventListenerMap;
 import org.liquidengine.legui.render.LeguiComponentRenderer;
 import org.liquidengine.legui.render.LeguiRendererProvider;
 import org.liquidengine.legui.util.ColorConstants;
+import org.liquidengine.legui.util.Util;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Component is an object that have graphical representation in legui system.
@@ -27,16 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Shcherbin Alexander on 9/14/2016.
  */
 public abstract class Component implements Serializable {
-
-//    /**
-//     * Indexer is integer that store next value for component index.
-//     */
-//    private static final AtomicInteger indexer = new AtomicInteger();
-//
-//    /**
-//     * Component id.
-//     */
-//    private final int componentId;
 
     /**
      * Metadata map, place where renderers or event processors can store state of component.
@@ -120,6 +110,13 @@ public abstract class Component implements Serializable {
     protected SystemEventListenerMap systemEventListeners = new SystemEventListenerMap(this.getClass());
 
     /**
+     * Tooltip message
+     */
+    protected String tooltipText = null;
+
+    protected Tooltip tooltip = null;
+
+    /**
      * Default constructor. Used to create component instance without any parameters.
      * <p>
      * Also if you want to make it easy to use with
@@ -191,6 +188,16 @@ public abstract class Component implements Serializable {
      */
     public SystemEventListenerMap getSystemEventListeners() {
         return systemEventListeners;
+    }
+
+    /**
+     * Returns origin position vector (component position on the screen).
+     * Be careful during changing this vector.
+     *
+     * @return position vector
+     */
+    public Vector2f getOriginPosition() {
+        return Util.calculatePosition(this);
     }
 
     /**
@@ -475,12 +482,53 @@ public abstract class Component implements Serializable {
         return metadata;
     }
 
-//    /**
-//     * Used to return component id
-//     */
-//    public int getComponentId() {
-//        return componentId;
-//    }
+    /**
+     * Returns tooltipText text
+     *
+     * @return tooltipText text
+     */
+    public String getTooltipText() {
+        return tooltipText;
+    }
+
+    /**
+     * Used to set tooltipText text
+     *
+     * @param tooltip tooltipText text
+     */
+    public void setTooltipText(String tooltip) {
+        this.tooltipText = tooltip;
+        if (this.tooltip == null) {
+            this.tooltip = new Tooltip(this);
+        }
+        this.tooltip.getTextState().setText(tooltip);
+    }
+
+    /**
+     * Generated tooltip component on base of tooltipText text.
+     * <p>
+     * You can use this component to set background, font and other visual effects.
+     * <p>
+     * <span style="color:red">
+     * NOTE: do nat add this component to frame component layer. <br>
+     * It automatically added to tooltip layer by system event processor.
+     * </span>
+     *
+     * @return tooltip component or null.
+     */
+    public Tooltip getTooltip() {
+        return tooltip;
+    }
+
+    /**
+     * Used to set tooltip component.
+     * You can set your own tooltip with own tooltip renderer using this setter.
+     *
+     * @param tooltip new tooltip.
+     */
+    public void setTooltip(Tooltip tooltip) {
+        this.tooltip = tooltip;
+    }
 
     /**
      * (non-Javadoc)
@@ -496,7 +544,7 @@ public abstract class Component implements Serializable {
         Component component = (Component) o;
 
         return new EqualsBuilder()
-//                .append(componentId, component.componentId)
+                .append(tooltip, tooltip)
                 .append(enabled, component.enabled)
                 .append(visible, component.visible)
                 .append(cornerRadius, component.cornerRadius)
@@ -517,7 +565,7 @@ public abstract class Component implements Serializable {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-//                .append(componentId)
+                .append(tooltip)
                 .append(position)
                 .append(size)
                 .append(backgroundColor)

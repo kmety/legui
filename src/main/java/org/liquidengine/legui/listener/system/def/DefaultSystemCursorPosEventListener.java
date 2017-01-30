@@ -19,6 +19,9 @@ import java.util.List;
  * Created by Shcherbin Alexander on 10/31/2016.
  */
 public class DefaultSystemCursorPosEventListener implements SystemEventListener<Component, SystemCursorPosEvent> {
+
+    public static final int tooltipOffset = 15;
+
     @Override
     public void update(SystemCursorPosEvent event, Component component, LeguiContext context) {
         if (component.isEnabled() && component.isVisible()) {
@@ -69,15 +72,22 @@ public class DefaultSystemCursorPosEventListener implements SystemEventListener<
         Vector2f                                   mousePosition    = position.sub(cursorPosition).negate();
         boolean                                    update           = false;
         CursorEnterEvent                           cursorEnterEvent = null;
+
         if (component.getState().isHovered()) {
             if (!intersects || component != context.getMouseTargetGui()) {
                 component.getState().setHovered(false);
                 cursorEnterEvent = new CursorEnterEvent(component, CursorEnterEvent.CursorEnterAction.EXIT, mousePosition);
+                if (component.getTooltipText() != null) {
+                    context.getFrame().getTooltipLayer().removeComponent(component.getTooltip());
+                }
                 update = true;
             }
         } else if (!component.getState().isHovered() && intersects && component == context.getMouseTargetGui()) {
             component.getState().setHovered(true);
             cursorEnterEvent = new CursorEnterEvent(component, CursorEnterEvent.CursorEnterAction.ENTER, mousePosition);
+            if (component.getTooltipText() != null) {
+                context.getFrame().getTooltipLayer().addComponent(component.getTooltip());
+            }
             update = true;
         }
         if (update) {

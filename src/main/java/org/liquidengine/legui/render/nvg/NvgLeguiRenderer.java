@@ -21,7 +21,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class NvgLeguiRenderer extends LeguiRenderer {
 
     public static final String IMAGE_REFERENCE_MANAGER = "ImageReferenceManager";
-    public static final String NVG_CONTEXT = "nvgContext";
+    public static final String NVG_CONTEXT             = "nvgContext";
 
     private long nvgContext;
 
@@ -46,8 +46,8 @@ public class NvgLeguiRenderer extends LeguiRenderer {
     }
 
     @Override
-    public void render(Frame component) {
-        super.render(component);
+    public void render(Frame frame) {
+        super.render(frame);
     }
 
     @Override

@@ -18,10 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Shcherbin Alexander on 9/20/2016.
  */
 public class NvgRendererProvider extends LeguiRendererProvider {
-    private Map<Class<? extends Component>, LeguiComponentRenderer> rendererMap = new ConcurrentHashMap<>();
-    private Map<Class<? extends Border>, LeguiBorderRenderer> borderRendererMap = new ConcurrentHashMap<>();
-    private NvgDefaultRenderer renderer = new NvgDefaultRenderer();
-    private NvgLeguiBorderRenderer borderRenderer = new NvgSimpleLineBorderRenderer();
+    private Map<Class<? extends Component>, LeguiComponentRenderer> rendererMap       = new ConcurrentHashMap<>();
+    private Map<Class<? extends Border>, LeguiBorderRenderer>       borderRendererMap = new ConcurrentHashMap<>();
+    private NvgDefaultRenderer                                      renderer          = new NvgDefaultRenderer();
+    private NvgLeguiBorderRenderer                                  borderRenderer    = new NvgSimpleLineBorderRenderer();
 
     public NvgRendererProvider() {
         initialize();
@@ -41,8 +41,8 @@ public class NvgRendererProvider extends LeguiRendererProvider {
         registerRenderer(TextInput.class, new NvgTextInputRenderer());
         registerRenderer(TextArea.class, new NvgTextAreaRenderer());
         registerRenderer(ToggleButton.class, new NvgToggleButtonRenderer());
-//
-//        // borders
+        registerRenderer(Tooltip.class, new NvgTooltipRenderer());
+        // borders
         registerRenderer(SimpleRectangleLineBorder.class, new NvgSimpleLineBorderRenderer());
 
     }
@@ -53,15 +53,15 @@ public class NvgRendererProvider extends LeguiRendererProvider {
     }
 
 
-    private LeguiComponentRenderer cycledSearchOfRenderer(Class<? extends Component> componentClass, LeguiComponentRenderer defaultListener) {
+    private LeguiComponentRenderer cycledSearchOfRenderer(Class<? extends Component> componentClass, LeguiComponentRenderer defaultRenderer) {
         LeguiComponentRenderer renderer = null;
-        Class cClass = componentClass;
+        Class                  cClass   = componentClass;
         while (renderer == null) {
             renderer = rendererMap.get(cClass);
             if (cClass.isAssignableFrom(Component.class)) break;
             cClass = cClass.getSuperclass();
         }
-        if (renderer == null) renderer = defaultListener;
+        if (renderer == null) renderer = defaultRenderer;
         return renderer;
     }
 

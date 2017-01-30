@@ -18,6 +18,12 @@ import org.liquidengine.legui.util.ColorConstants;
 import org.liquidengine.legui.util.Util;
 import org.lwjgl.glfw.GLFW;
 
+import static org.liquidengine.legui.component.optional.align.HorizontalAlign.CENTER;
+import static org.liquidengine.legui.component.optional.align.HorizontalAlign.LEFT;
+import static org.liquidengine.legui.component.optional.align.HorizontalAlign.RIGHT;
+import static org.liquidengine.legui.component.optional.align.VerticalAlign.BOTTOM;
+import static org.liquidengine.legui.component.optional.align.VerticalAlign.MIDDLE;
+import static org.liquidengine.legui.component.optional.align.VerticalAlign.TOP;
 import static org.liquidengine.legui.event.component.MouseClickEvent.MouseClickAction.*;
 
 
@@ -84,6 +90,37 @@ public class ExampleGui extends Frame {
         button.setBackgroundColor(new Vector4f(1));
         this.addComponent(button);
 
+        button.setTooltipText("Just button");
+        button.getTooltip().setPosition(0, 25);
+        button.getTooltip().getSize().set(50, 40);
+        button.getTooltip().setBackgroundColor(ColorConstants.darkGray());
+        button.getTooltip().getTextState().setTextColor(ColorConstants.white());
+        button.getTooltip().getTextState().setPadding(4, 4, 4, 4);
+
+        int idv[] = {0};
+        button.getLeguiEventListeners().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
+            if (event.getAction().equals(CLICK)) {
+                idv[0]++;
+                HorizontalAlign h = LEFT;
+                VerticalAlign   v = TOP;
+                int             hh = idv[0] % 3;
+                int             vv = (idv[0] / 3) % 3;
+                switch (hh){
+                    case 0: h = LEFT; break;
+                    case 1: h = CENTER; break;
+                    case 2: h = RIGHT; break;
+                }
+                switch (vv){
+                    case 0: v = TOP; break;
+                    case 1: v = MIDDLE; break;
+                    case 2: v = BOTTOM; break;
+                }
+                System.out.println(h + " " + v);
+                button.getTooltip().getTextState().setHorizontalAlign(h);
+                button.getTooltip().getTextState().setVerticalAlign(v);
+            }
+        });
+
         CheckBox checkBox1 = new CheckBox(20, 200, 50, 20);
         this.addComponent(checkBox1);
 
@@ -114,14 +151,14 @@ public class ExampleGui extends Frame {
         this.addComponent(slider2);
 
         textInput = new TextInput(250, 130, 100, 30);
-        textInput.getTextState().setHorizontalAlign(HorizontalAlign.RIGHT);
+        textInput.getTextState().setHorizontalAlign(RIGHT);
         textInput.getLeguiEventListeners().addListener(KeyboardKeyEvent.class, (KeyboardKeyEventListener) event -> {
             if (event.getKey() == GLFW.GLFW_KEY_F1 && event.getAction() == GLFW.GLFW_RELEASE)
-                textInput.getTextState().setHorizontalAlign(HorizontalAlign.LEFT);
+                textInput.getTextState().setHorizontalAlign(LEFT);
             else if (event.getKey() == GLFW.GLFW_KEY_F2 && event.getAction() == GLFW.GLFW_RELEASE)
-                textInput.getTextState().setHorizontalAlign(HorizontalAlign.CENTER);
+                textInput.getTextState().setHorizontalAlign(CENTER);
             else if (event.getKey() == GLFW.GLFW_KEY_F3 && event.getAction() == GLFW.GLFW_RELEASE)
-                textInput.getTextState().setHorizontalAlign(HorizontalAlign.RIGHT);
+                textInput.getTextState().setHorizontalAlign(RIGHT);
         });
         this.addComponent(textInput);
 
@@ -129,13 +166,13 @@ public class ExampleGui extends Frame {
         widget.setTitleHeight(20);
         widget.setTitleBackgroundColor(ColorConstants.lightGreen());
 
-        Button    turnWidVisible = new Button("", 360, 280, 20, 20);
+        Button turnWidVisible = new Button("", 360, 280, 20, 20);
         turnWidVisible.getLeguiEventListeners().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
             if (CLICK.equals(event.getAction())) widget.setVisible(true);
         });
-        ImageView bgIm           = new ImageView(new Image("org/liquidengine/legui/example/1.png"));
-        ImageView hbgIm          = new ImageView(new Image("org/liquidengine/legui/example/2.png"));
-        ImageView pbIm           = new ImageView(new Image("org/liquidengine/legui/example/3.png"));
+        ImageView bgIm  = new ImageView(new Image("org/liquidengine/legui/example/1.png"));
+        ImageView hbgIm = new ImageView(new Image("org/liquidengine/legui/example/2.png"));
+        ImageView pbIm  = new ImageView(new Image("org/liquidengine/legui/example/3.png"));
         bgIm.setSize(20, 20);
         hbgIm.setSize(20, 20);
         pbIm.setSize(20, 20);
@@ -169,14 +206,14 @@ public class ExampleGui extends Frame {
         widget2.setTitleBackgroundColor(ColorConstants.lightGreen());
         widget2.setDraggable(false);
 
-        Button    turnDraggable = new Button("Draggable", 10, 10, 80, 20);
+        Button turnDraggable = new Button("Draggable", 10, 10, 80, 20);
         turnDraggable.getLeguiEventListeners().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
             if (CLICK.equals(event.getAction())) widget2.setDraggable(!widget2.isDraggable());
         });
         widget2.getContainer().addComponent(turnDraggable);
         this.addComponent(widget2);
 
-        Button    turnWidVisible2 = new Button("", 360, 310, 20, 20);
+        Button turnWidVisible2 = new Button("", 360, 310, 20, 20);
         turnWidVisible2.getLeguiEventListeners().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
             if (CLICK.equals(event.getAction())) widget2.setVisible(true);
         });
@@ -190,7 +227,7 @@ public class ExampleGui extends Frame {
         widget3.setMinimizeable(false);
         this.addComponent(widget3);
 
-        Button    turnWidVisible3 = new Button("", 360, 340, 20, 20);
+        Button turnWidVisible3 = new Button("", 360, 340, 20, 20);
         turnWidVisible3.getLeguiEventListeners().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
             if (CLICK.equals(event.getAction())) widget3.setVisible(true);
         });
@@ -203,8 +240,8 @@ public class ExampleGui extends Frame {
         widget3.getContainer().addComponent(new Panel(5, 30, 20, 20));
         Button b = new Button(55, 5, 40, 45);
         b.getTextState().setFont(FontRegister.MATERIAL_ICONS_REGULAR);
-        b.getTextState().setVerticalAlign(VerticalAlign.MIDDLE);
-        b.getTextState().setHorizontalAlign(HorizontalAlign.CENTER);
+        b.getTextState().setVerticalAlign(MIDDLE);
+        b.getTextState().setHorizontalAlign(CENTER);
         b.getTextState().setFontSize(20);
 
         String up   = Util.cpToStr(0xE5D8);
@@ -251,7 +288,6 @@ public class ExampleGui extends Frame {
         Panel panel1 = new Panel(420, 170, 100, 100);
         panel1.setBackgroundColor(ColorConstants.blue());
         this.addComponent(panel1);
-//        panel1.getLeguiEventListeners().addListener(CursorEnterEvent.class, System.out::println);
         Panel panel2 = new Panel(470, 170, 100, 100);
         panel2.setBackgroundColor(ColorConstants.green());
         this.addComponent(panel2);
@@ -289,36 +325,36 @@ public class ExampleGui extends Frame {
         textArea = new TextArea(420, 280, 150, 100);
         textArea.getTextState().setText("ABC DEF GH\r\nI JKL MNO PQR\nSTU VWXYZ");
         textArea.setCaretPosition(12);
-        textArea.getTextState().setHorizontalAlign(HorizontalAlign.CENTER);
-        textArea.getTextState().setVerticalAlign(VerticalAlign.BOTTOM);
+        textArea.getTextState().setHorizontalAlign(CENTER);
+        textArea.getTextState().setVerticalAlign(BOTTOM);
         this.addComponent(textArea);
 
         textArea.getLeguiEventListeners().addListener(KeyboardKeyEvent.class, (KeyboardKeyEventListener) event -> {
             if (event.getKey() == GLFW.GLFW_KEY_F1 && event.getAction() == GLFW.GLFW_RELEASE)
-                textArea.getTextState().setHorizontalAlign(HorizontalAlign.LEFT);
+                textArea.getTextState().setHorizontalAlign(LEFT);
             else if (event.getKey() == GLFW.GLFW_KEY_F2 && event.getAction() == GLFW.GLFW_RELEASE)
-                textArea.getTextState().setHorizontalAlign(HorizontalAlign.CENTER);
+                textArea.getTextState().setHorizontalAlign(CENTER);
             else if (event.getKey() == GLFW.GLFW_KEY_F3 && event.getAction() == GLFW.GLFW_RELEASE)
-                textArea.getTextState().setHorizontalAlign(HorizontalAlign.RIGHT);
+                textArea.getTextState().setHorizontalAlign(RIGHT);
             else if (event.getKey() == GLFW.GLFW_KEY_F5 && event.getAction() == GLFW.GLFW_RELEASE)
-                textArea.getTextState().setVerticalAlign(VerticalAlign.TOP);
+                textArea.getTextState().setVerticalAlign(TOP);
             else if (event.getKey() == GLFW.GLFW_KEY_F6 && event.getAction() == GLFW.GLFW_RELEASE)
-                textArea.getTextState().setVerticalAlign(VerticalAlign.MIDDLE);
+                textArea.getTextState().setVerticalAlign(MIDDLE);
             else if (event.getKey() == GLFW.GLFW_KEY_F7 && event.getAction() == GLFW.GLFW_RELEASE)
-                textArea.getTextState().setVerticalAlign(VerticalAlign.BOTTOM);
+                textArea.getTextState().setVerticalAlign(BOTTOM);
             else if (event.getKey() == GLFW.GLFW_KEY_F8 && event.getAction() == GLFW.GLFW_RELEASE)
                 textArea.getTextState().setVerticalAlign(VerticalAlign.BASELINE);
         });
 
         caretp = new TextInput(420, 400, 150, 20);
-        caretp.getTextState().setHorizontalAlign(HorizontalAlign.CENTER);
+        caretp.getTextState().setHorizontalAlign(CENTER);
         this.addComponent(caretp);
 
         TextInput inpur = new TextInput(420, 430, 50, 35);
         inpur.getTextState().setText("00");
         inpur.getTextState().setFontSize(35);
-        inpur.getTextState().setHorizontalAlign(HorizontalAlign.CENTER);
-        inpur.getTextState().setVerticalAlign(VerticalAlign.MIDDLE);
+        inpur.getTextState().setHorizontalAlign(CENTER);
+        inpur.getTextState().setVerticalAlign(MIDDLE);
         inpur.setBackgroundColor(ColorConstants.white());
         this.addComponent(inpur);
 
@@ -351,23 +387,51 @@ public class ExampleGui extends Frame {
         });
         this.addComponent(sbb);
 
-        ToggleButton toggleButton = new ToggleButton(100, 170, 40, 40);
-        ImageView bgImageNormal = new ImageView(new Image("org/liquidengine/legui/example/normal.png"));
-        ImageView bgImageToggledH = new ImageView(new Image("org/liquidengine/legui/example/1.png"));
-        ImageView bgImageToggled = new ImageView(new Image("org/liquidengine/legui/example/toggled.png"));
+        ToggleButton toggleButton    = new ToggleButton(100, 170, 40, 40);
+        this.addComponent(toggleButton);
+        ImageView    bgImageNormal   = new ImageView(new Image("org/liquidengine/legui/example/normal.png"));
+        ImageView    bgImageToggled  = new ImageView(new Image("org/liquidengine/legui/example/toggled.png"));
+
+        toggleButton.setTooltipText("Just toggle button with long tooltipText text");
+        toggleButton.getTooltip().setPosition(45, 0);
+        toggleButton.getTooltip().getSize().set(140, 40);
+        toggleButton.getTooltip().setBackgroundColor(ColorConstants.darkGray());
+        toggleButton.getTooltip().getTextState().setTextColor(ColorConstants.white());
+        toggleButton.getTooltip().getTextState().setPadding(4, 4, 4, 4);
+
+        int id[] = {0};
+        toggleButton.getLeguiEventListeners().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
+            if (event.getAction().equals(CLICK)) {
+                id[0]++;
+                HorizontalAlign h = LEFT;
+                VerticalAlign   v = TOP;
+                int             hh = id[0] % 3;
+                int             vv = (id[0] / 3) % 3;
+                switch (hh){
+                    case 0: h = LEFT; break;
+                    case 1: h = CENTER; break;
+                    case 2: h = RIGHT; break;
+                }
+                switch (vv){
+                    case 0: v = TOP; break;
+                    case 1: v = MIDDLE; break;
+                    case 2: v = BOTTOM; break;
+                }
+                System.out.println(h + " " + v);
+                toggleButton.getTooltip().getTextState().setHorizontalAlign(h);
+                toggleButton.getTooltip().getTextState().setVerticalAlign(v);
+
+            }
+        });
 
         bgImageNormal.setSize(36, 36);
-//        bgImageToggledH.setSize(36, 36);
         bgImageToggled.setSize(36, 36);
 
         bgImageNormal.setPosition(2, 2);
-//        bgImageToggledH.setPosition(2, 2);
         bgImageToggled.setPosition(2, 2);
 
         toggleButton.setBackgroundImage(bgImageNormal);
-//        toggleButton.setHoveredBackgroundImage(bgImageToggledH);
         toggleButton.setTogglededBackgroundImage(bgImageToggled);
-        this.addComponent(toggleButton);
 
     }
 
