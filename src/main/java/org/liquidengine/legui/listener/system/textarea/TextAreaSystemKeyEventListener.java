@@ -86,7 +86,7 @@ public class TextAreaSystemKeyEventListener implements SystemEventListener<TextA
     }
 
     private void keyDeleteAction(TextArea gui, int caretPosition, TextState textState, int mods) {
-        if (gui.isEditable() && caretPosition != textState.length()) {
+        if (gui.isEditable()) {
             if ((mods & GLFW_MOD_CONTROL) != 0) {
                 gui.setEndSelectionIndex(findNextWord(textState.getText(), caretPosition));
             }
@@ -96,7 +96,7 @@ public class TextAreaSystemKeyEventListener implements SystemEventListener<TextA
                 start = gui.getEndSelectionIndex();
                 end = gui.getStartSelectionIndex();
             }
-            if (start == end) {
+            if (start == end && caretPosition != textState.length()) {
                 textState.deleteCharAt(caretPosition);
             } else {
                 textState.delete(start, end);
@@ -108,7 +108,7 @@ public class TextAreaSystemKeyEventListener implements SystemEventListener<TextA
     }
 
     private void keyBackSpaceAction(TextArea gui, int caretPosition, TextState textState, int mods) {
-        if (gui.isEditable() && caretPosition != 0) {
+        if (gui.isEditable()) {
             if ((mods & GLFW_MOD_CONTROL) != 0) {
                 gui.setEndSelectionIndex(findPrevWord(textState.getText(), caretPosition));
             }
@@ -118,7 +118,7 @@ public class TextAreaSystemKeyEventListener implements SystemEventListener<TextA
                 start = gui.getEndSelectionIndex();
                 end = gui.getStartSelectionIndex();
             }
-            if (start == end) {
+            if (start == end && caretPosition != 0) {
                 textState.deleteCharAt(caretPosition - 1);
                 gui.setCaretPosition(caretPosition - 1);
             } else {

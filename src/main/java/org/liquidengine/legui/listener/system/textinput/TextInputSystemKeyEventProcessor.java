@@ -112,16 +112,15 @@ public class TextInputSystemKeyEventProcessor implements SystemEventListener<Tex
                 start = gui.getEndSelectionIndex();
                 end = gui.getStartSelectionIndex();
             }
-            if (caretPosition != 0) {
-                if (start == end) {
-                    textState.deleteCharAt(caretPosition - 1);
-                    gui.setCaretPosition(caretPosition - 1);
-                } else {
-                    textState.delete(start, end);
-                    gui.setCaretPosition(start);
-                    gui.setStartSelectionIndex(start);
-                    gui.setEndSelectionIndex(start);
-                }
+
+            if (start == end && caretPosition != 0) {
+                textState.deleteCharAt(caretPosition - 1);
+                gui.setCaretPosition(caretPosition - 1);
+            } else {
+                textState.delete(start, end);
+                gui.setCaretPosition(start);
+                gui.setStartSelectionIndex(start);
+                gui.setEndSelectionIndex(start);
             }
         }
     }
