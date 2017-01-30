@@ -5,7 +5,6 @@ import org.joml.Vector2fc;
 import org.joml.Vector4f;
 import org.joml.Vector4fc;
 import org.liquidengine.legui.component.Component;
-import org.liquidengine.legui.component.Layer;
 import org.liquidengine.legui.component.border.Border;
 import org.liquidengine.legui.component.optional.TextState;
 import org.liquidengine.legui.component.optional.align.HorizontalAlign;
@@ -329,6 +328,7 @@ public final class NvgRenderUtils {
      * Creates scissor by provided component and it's parent components
      *
      * @param context nanovg context
+     * @param parent  parent component
      */
     public static void createScissorByParent(long context, Component parent) {
         if (parent != null) {
@@ -347,7 +347,7 @@ public final class NvgRenderUtils {
     /**
      * Resets scissor
      *
-     * @param context
+     * @param context nanovg context pointer
      */
     public static void resetScissor(long context) {
         nvgResetScissor(context);

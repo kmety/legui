@@ -14,7 +14,6 @@ import org.liquidengine.legui.util.ColorConstants;
 /**
  * An implementation of "push" button.
  * <p>
- * <p>
  * Created by Shcherbin Alexander on 9/22/2016.
  */
 public class Button extends Component {
@@ -53,6 +52,11 @@ public class Button extends Component {
 
     /**
      * Creates a button with default text and specified position and size.
+     *
+     * @param x      x position in parent
+     * @param y      y position in parent
+     * @param width  width of component
+     * @param height height of component
      */
     public Button(float x, float y, float width, float height) {
         this("Button", x, y, width, height);
@@ -60,6 +64,9 @@ public class Button extends Component {
 
     /**
      * Creates a button with default text and specified position and size.
+     *
+     * @param position position in parent
+     * @param size     size of component
      */
     public Button(Vector2f position, Vector2f size) {
         this("Button", position, size);
@@ -67,6 +74,8 @@ public class Button extends Component {
 
     /**
      * Creates a button with specified text.
+     *
+     * @param text button text.
      */
     public Button(String text) {
         initialize(text);
@@ -74,6 +83,12 @@ public class Button extends Component {
 
     /**
      * Creates a button with specified text and specified position and size.
+     *
+     * @param text   button text.
+     * @param x      x position in parent
+     * @param y      y position in parent
+     * @param width  width of component
+     * @param height height of component
      */
     public Button(String text, float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -82,6 +97,10 @@ public class Button extends Component {
 
     /**
      * Creates a button with specified text and specified position and size.
+     *
+     * @param text     button text.
+     * @param position position in parent
+     * @param size     size of component
      */
     public Button(String text, Vector2f position, Vector2f size) {
         super(position, size);

@@ -68,6 +68,7 @@ public final class GsonSerializeRegistry {
      * Returns serializer for specified class
      *
      * @param tClass class
+     * @param <T>    type of serialized/deserialized class
      * @return json serializer for specified class
      */
     public <T> AbstractGsonSerializer<T> getSerializer(Class<T> tClass) {

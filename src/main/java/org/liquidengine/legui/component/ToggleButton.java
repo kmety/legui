@@ -26,6 +26,11 @@ public class ToggleButton extends Button {
         initialize();
     }
 
+    /**
+     * Creates toggle button with default bg color, toggled bg color and specified text.
+     *
+     * @param text button text.
+     */
     public ToggleButton(String text) {
         super(text);
         initialize();
@@ -33,6 +38,11 @@ public class ToggleButton extends Button {
 
     /**
      * Creates a button with specified position and size and default bg color and default toggled bg color.
+     *
+     * @param x      x position in parent
+     * @param y      y position in parent
+     * @param width  width of component
+     * @param height height of component
      */
     public ToggleButton(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -41,6 +51,9 @@ public class ToggleButton extends Button {
 
     /**
      * Creates a button with specified position and size and default bg color and default toggled bg color.
+     *
+     * @param position position in parent
+     * @param size     size of component
      */
     public ToggleButton(Vector2f position, Vector2f size) {
         super(position, size);

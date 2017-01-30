@@ -16,7 +16,9 @@ public interface LeguiBorderRenderer {
     /**
      * Render Gui and fit it to target width and height
      *
-     * @param border gui frame to render
+     * @param border    gui frame to render
+     * @param component border owner component
+     * @param context   context
      */
     void render(Border border, LeguiContext context, Component component);
 

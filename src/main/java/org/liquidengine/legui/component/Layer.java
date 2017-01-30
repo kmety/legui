@@ -229,9 +229,6 @@ public class Layer {
     /**
      * Used to retrieve child components as {@link List}
      * <p>
-     * <p>
-     * <span style="color:red">NOTE: this method returns {@link List} of components when components stored as {@link Set}</span>
-     *
      * @return list of child components.
      */
     public List<Component> getComponents() {

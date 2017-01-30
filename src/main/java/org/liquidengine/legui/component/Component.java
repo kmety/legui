@@ -213,7 +213,7 @@ public abstract class Component implements Serializable {
     /**
      * Used to set position of component
      *
-     * @param position
+     * @param position new position for component
      */
     public void setPosition(Vector2f position) {
         this.position = position;
@@ -240,7 +240,7 @@ public abstract class Component implements Serializable {
      * }
      * </pre>
      *
-     * @return
+     * @return size of component
      */
     public Vector2f getSize() {
         return size;
@@ -268,7 +268,7 @@ public abstract class Component implements Serializable {
     /**
      * Returns ui event listeners
      *
-     * @return
+     * @return listener map
      */
     public LeguiEventListenerMap getLeguiEventListeners() {
         return leguiEventListeners;
@@ -277,7 +277,7 @@ public abstract class Component implements Serializable {
     /**
      * Used to set ui event listeners
      *
-     * @param leguiEventListeners
+     * @param leguiEventListeners new listener map
      */
     public void setLeguiEventListeners(LeguiEventListenerMap leguiEventListeners) {
         this.leguiEventListeners = leguiEventListeners;

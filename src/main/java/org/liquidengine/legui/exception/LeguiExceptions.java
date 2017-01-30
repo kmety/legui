@@ -18,8 +18,14 @@ public enum LeguiExceptions {
         this.message = message;
     }
 
+    /**
+     * Error message constructor.
+     *
+     * @param args error message variables
+     * @return constructed message
+     */
     public String message(String... args) {
-        return String.format(message, args);
+        return String.format(message, (Object[]) args);
     }
 
 }

@@ -78,8 +78,9 @@ public abstract class AbstractGsonSerializer<T> implements JsonSerializer<T> {
     /**
      * Reads data from json object and puts it to object
      *
-     * @param json   json object to read
-     * @param object object to fill
+     * @param json    json object to read
+     * @param object  object to fill
+     * @param context serialize context
      */
     protected abstract void deserialize(JsonObject json, T object, GsonSerializeContext context);
 
@@ -112,6 +113,7 @@ public abstract class AbstractGsonSerializer<T> implements JsonSerializer<T> {
      *
      * @param object object to read
      * @param json   json object to fill
+     * @param context serialize context
      */
     protected abstract void jsonSerialize(T object, JsonObject json, GsonSerializeContext context);
 
