@@ -7,14 +7,14 @@
   </tr>
   <tr>
     <td align="center"><img src="https://reposs.herokuapp.com/?path=LiquidEngine/legui"/></td>
-    <td align="center"><a href="http://liquidengine.tk:8080/job/legui/job/develop/" target="_blank">
-      <img src="http://liquidengine.tk:8080/buildStatus/icon?job=legui/develop"/>
+    <td align="center"><a href="http://jenkins.liquidengine.tk/job/legui/job/develop/" target="_blank">
+      <img src="http://jenkins.liquidengine.tk/buildStatus/icon?job=legui/develop"/>
     </a></td>
-    <td align="center"><a href="http://liquidengine.tk:8080/job/legui/job/snapshots/" target="_blank">
-      <img src="http://liquidengine.tk:8080/buildStatus/icon?job=legui/snapshots"/>
+    <td align="center"><a href="http://jenkins.liquidengine.tk/job/legui/job/snapshots/" target="_blank">
+      <img src="http://jenkins.liquidengine.tk/buildStatus/icon?job=legui/snapshots"/>
     </a></td>
-    <td align="center"><a href="http://liquidengine.tk:8080/job/legui/job/releases/" target="_blank">
-      <img src="http://liquidengine.tk:8080/buildStatus/icon?job=legui/releases"/>
+    <td align="center"><a href="http://jenkins.liquidengine.tk/job/legui/job/releases/" target="_blank">
+      <img src="http://jenkins.liquidengine.tk/buildStatus/icon?job=legui/releases"/>
     </a></td>
   </tr>
 </table>
