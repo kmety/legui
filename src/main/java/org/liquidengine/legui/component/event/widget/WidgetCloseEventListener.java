@@ -3,6 +3,9 @@ package org.liquidengine.legui.component.event.widget;
 import org.liquidengine.legui.listener.EventListener;
 
 /**
+ * Event listener for {@link WidgetCloseEvent}.
+ *
+ * @param <T> type of event (base type is {@link WidgetCloseEvent}).
  * @author Aliaksandr_Shcherbin.
  */
 public interface WidgetCloseEventListener<T extends WidgetCloseEvent> extends EventListener<T> {

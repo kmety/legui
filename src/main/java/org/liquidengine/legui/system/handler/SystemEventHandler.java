@@ -5,10 +5,17 @@ import org.liquidengine.legui.system.context.Context;
 import org.liquidengine.legui.system.event.SystemEvent;
 
 /**
- * Created by ShchAlexander on 10.02.2017.
+ * Event handler interface for {@link SystemEvent}
  */
 public interface SystemEventHandler<E extends SystemEvent> {
 
+    /**
+     * Used to handle system event.
+     *
+     * @param event event to handle.
+     * @param frame target frame.
+     * @param context target context.
+     */
     void handle(E event, Frame frame, Context context);
 }
 

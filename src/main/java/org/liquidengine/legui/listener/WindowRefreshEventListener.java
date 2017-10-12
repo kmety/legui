@@ -3,9 +3,14 @@ package org.liquidengine.legui.listener;
 import org.liquidengine.legui.event.WindowRefreshEvent;
 
 /**
- * Created by ShchAlexander on 04.02.2017.
+ * Listener for window refresh event.
  */
 public interface WindowRefreshEventListener extends EventListener<WindowRefreshEvent> {
 
+    /**
+     * Used to handle window refresh event.
+     *
+     * @param event window refresh event to handle.
+     */
     void process(WindowRefreshEvent event);
 }
