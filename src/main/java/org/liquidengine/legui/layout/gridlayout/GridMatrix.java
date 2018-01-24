@@ -1,5 +1,8 @@
 package org.liquidengine.legui.layout.gridlayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ShchAlexander on 23.01.2018.
  */
@@ -198,5 +201,17 @@ public class GridMatrix<T> {
 
     public int getRowCount() {
         return matrix[0].length;
+    }
+
+    public List<List<T>> getMatrix() {
+        List<List<T>> matrixL = new ArrayList<>();
+        for (Object[] objects : matrix) {
+            List<T> e = new ArrayList<>();
+            for (Object object : objects) {
+                e.add((T) object);
+            }
+            matrixL.add(e);
+        }
+        return matrixL;
     }
 }
