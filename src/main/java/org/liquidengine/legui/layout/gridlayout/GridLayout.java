@@ -143,7 +143,6 @@ public class GridLayout implements Layout {
                 long compNode = YGNodeNew();
                 compNodes.add(compNode);
                 YGNodeStyleSetFlex(compNode, YGDisplayNone);
-                YGNodeStyleSetFlexBasis(compNode, 0);
 
                 Component component = matrix.get(column).get(row);
                 if (component != null) {
@@ -183,6 +182,55 @@ public class GridLayout implements Layout {
             YGNodeInsertChild(rootNode, columnNode, column);
         }
 
+        // apply calculations
+        boolean simple = true;
+        if (simple) {
+            simpleLayouting(rootNode, columnNodes, cellNodes, compNodes, size, matrix, columnCount, rowCount);
+        } else
+        // align vertically.
+        {
+            complexLayouting(rootNode, columnNodes, cellNodes, compNodes, size, matrix, columnCount, rowCount);
+        }
+
+        // free native memory
+        for (Long columnNode : columnNodes) {
+            YGNodeFree(columnNode);
+        }
+        for (Long cellNode : cellNodes) {
+            YGNodeFree(cellNode);
+        }
+        for (Long compNode : compNodes) {
+            YGNodeFree(compNode);
+        }
+        YGNodeFree(rootNode);
+    }
+
+    private void simpleLayouting(long rootNode, List<Long> columnNodes, List<Long> cellNodes, List<Long> compNodes, Vector2f size, List<List<Component>> matrix,
+        int columnCount, int rowCount) {
+        YGNodeCalculateLayout(rootNode, size.x, size.y, YGDirectionLTR);
+        for (int column = 0; column < columnCount; column++) {
+            Long columnNode = columnNodes.get(column);
+            float left = YGNodeLayoutGetLeft(columnNode);
+            for (int row = 0; row < rowCount; row++) {
+                Component component = matrix.get(column).get(row);
+                if (component != null) {
+                    int index = column * rowCount + row;
+                    Long compNode = compNodes.get(index);
+                    float top = YGNodeLayoutGetTop(cellNodes.get(index));
+
+                    float width = YGNodeLayoutGetWidth(compNode);
+                    float height = YGNodeLayoutGetHeight(compNode);
+                    float x = left + YGNodeLayoutGetLeft(compNode);
+                    float y = top + YGNodeLayoutGetTop(compNode);
+                    component.setSize(width, height);
+                    component.setPosition(x, y);
+                }
+            }
+        }
+    }
+
+    private void complexLayouting(long rootNode, List<Long> columnNodes, List<Long> cellNodes, List<Long> compNodes, Vector2f size,
+        List<List<Component>> matrix, int columnCount, int rowCount) {
         YGNodeCalculateLayout(rootNode, size.x, size.y, YGDirectionLTR);
 
         // apply calculations
@@ -197,54 +245,39 @@ public class GridLayout implements Layout {
                     Long compNode = compNodes.get(index);
 
                     float width = YGNodeLayoutGetWidth(compNode);
-                    float height = component.getSize().y; // YGNodeLayoutGetHeight(compNode);
+                    float height = component.getSize().y;
                     float x = left + YGNodeLayoutGetLeft(compNode);
-                    float y = component.getPosition().y; // top + YGNodeLayoutGetTop(compNode);
+                    float y = component.getPosition().y;
                     component.setSize(width, height);
                     component.setPosition(x, y);
                 }
             }
         }
 
-        // align vertically.
-        {
-            for (Long cellNode : cellNodes) {
-                YGNodeStyleSetFlexDirection(cellNode, YGFlexDirectionColumn);
-            }
-            YGNodeCalculateLayout(rootNode, size.x, size.y, YGDirectionLTR);
+        for (Long cellNode : cellNodes) {
+            YGNodeStyleSetFlexDirection(cellNode, YGFlexDirectionColumn);
+        }
+        YGNodeCalculateLayout(rootNode, size.x, size.y, YGDirectionLTR);
 
-            // apply calculations
+        // apply calculations
 
-            for (int column = 0; column < columnCount; column++) {
-                for (int row = 0; row < rowCount; row++) {
-                    Component component = matrix.get(column).get(row);
-                    if (component != null) {
-                        int index = column * rowCount + row;
-                        Long compNode = compNodes.get(index);
-                        float top = YGNodeLayoutGetTop(cellNodes.get(index));
+        for (int column = 0; column < columnCount; column++) {
+            for (int row = 0; row < rowCount; row++) {
+                Component component = matrix.get(column).get(row);
+                if (component != null) {
+                    int index = column * rowCount + row;
+                    Long compNode = compNodes.get(index);
+                    float top = YGNodeLayoutGetTop(cellNodes.get(index));
 
-                        float width = component.getSize().x;// YGNodeLayoutGetWidth(compNode);
-                        float height = YGNodeLayoutGetHeight(compNode);
-                        float x = component.getPosition().x;// left + YGNodeLayoutGetLeft(compNode);
-                        float y = top + YGNodeLayoutGetTop(compNode);
-                        component.setSize(width, height);
-                        component.setPosition(x, y);
-                    }
+                    float width = component.getSize().x;
+                    float height = YGNodeLayoutGetHeight(compNode);
+                    float x = component.getPosition().x;
+                    float y = top + YGNodeLayoutGetTop(compNode);
+                    component.setSize(width, height);
+                    component.setPosition(x, y);
                 }
             }
         }
-
-        // free native memory
-        for (Long columnNode : columnNodes) {
-            YGNodeFree(columnNode);
-        }
-        for (Long cellNode : cellNodes) {
-            YGNodeFree(cellNode);
-        }
-        for (Long compNode : compNodes) {
-            YGNodeFree(compNode);
-        }
-        YGNodeFree(rootNode);
     }
 
     public void addRow(int index, float rowHeight) {
