@@ -15,7 +15,6 @@ import static org.lwjgl.util.yoga.Yoga.YGNodeLayoutGetWidth;
 import static org.lwjgl.util.yoga.Yoga.YGNodeNew;
 import static org.lwjgl.util.yoga.Yoga.YGNodeStyleSetAlignItems;
 import static org.lwjgl.util.yoga.Yoga.YGNodeStyleSetFlex;
-import static org.lwjgl.util.yoga.Yoga.YGNodeStyleSetFlexBasis;
 import static org.lwjgl.util.yoga.Yoga.YGNodeStyleSetFlexDirection;
 import static org.lwjgl.util.yoga.Yoga.YGNodeStyleSetFlexGrow;
 import static org.lwjgl.util.yoga.Yoga.YGNodeStyleSetHeight;
@@ -32,6 +31,9 @@ import org.liquidengine.legui.layout.LayoutConstraint;
 import org.liquidengine.legui.style.Style;
 import org.lwjgl.util.yoga.Yoga;
 
+/**
+ * Grid layout implementation. Used to lay out components as grid in
+ */
 public class GridLayout implements Layout {
 
     private GridMatrix<Component> components;
@@ -90,7 +92,7 @@ public class GridLayout implements Layout {
      */
     @Override
     public void removeComponent(Component component) {
-        component.remove(component);
+        components.remove(component);
     }
 
     /**
@@ -182,15 +184,7 @@ public class GridLayout implements Layout {
             YGNodeInsertChild(rootNode, columnNode, column);
         }
 
-        // apply calculations
-        boolean simple = true;
-        if (simple) {
-            simpleLayouting(rootNode, columnNodes, cellNodes, compNodes, size, matrix, columnCount, rowCount);
-        } else
-        // align vertically.
-        {
-            complexLayouting(rootNode, columnNodes, cellNodes, compNodes, size, matrix, columnCount, rowCount);
-        }
+        complexLayouting(rootNode, columnNodes, cellNodes, compNodes, size, matrix, columnCount, rowCount);
 
         // free native memory
         for (Long columnNode : columnNodes) {
@@ -203,30 +197,6 @@ public class GridLayout implements Layout {
             YGNodeFree(compNode);
         }
         YGNodeFree(rootNode);
-    }
-
-    private void simpleLayouting(long rootNode, List<Long> columnNodes, List<Long> cellNodes, List<Long> compNodes, Vector2f size, List<List<Component>> matrix,
-        int columnCount, int rowCount) {
-        YGNodeCalculateLayout(rootNode, size.x, size.y, YGDirectionLTR);
-        for (int column = 0; column < columnCount; column++) {
-            Long columnNode = columnNodes.get(column);
-            float left = YGNodeLayoutGetLeft(columnNode);
-            for (int row = 0; row < rowCount; row++) {
-                Component component = matrix.get(column).get(row);
-                if (component != null) {
-                    int index = column * rowCount + row;
-                    Long compNode = compNodes.get(index);
-                    float top = YGNodeLayoutGetTop(cellNodes.get(index));
-
-                    float width = YGNodeLayoutGetWidth(compNode);
-                    float height = YGNodeLayoutGetHeight(compNode);
-                    float x = left + YGNodeLayoutGetLeft(compNode);
-                    float y = top + YGNodeLayoutGetTop(compNode);
-                    component.setSize(width, height);
-                    component.setPosition(x, y);
-                }
-            }
-        }
     }
 
     private void complexLayouting(long rootNode, List<Long> columnNodes, List<Long> cellNodes, List<Long> compNodes, Vector2f size,
@@ -334,5 +304,7 @@ public class GridLayout implements Layout {
         return components.getRowCount();
     }
 
-
+    public List<List<Component>> getMatrix() {
+        return components.getMatrix();
+    }
 }
