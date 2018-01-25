@@ -214,4 +214,32 @@ public class GridMatrix<T> {
         }
         return matrixL;
     }
+
+    public List<T> getRow(int row) {
+        if (row > matrix[0].length) {
+            throw new IndexOutOfBoundsException(
+                "Row (Index: " + row + ", Size: " + matrix[0].length + ")."
+            );
+        }
+        List<T> rowElements = new ArrayList<>();
+        int columnCount = getColumnCount();
+        for (int column = 0; column < columnCount; column++) {
+            rowElements.add(innerGet(column, row));
+        }
+        return rowElements;
+    }
+
+    public List<T> getColumn(int column) {
+        if (column > matrix.length) {
+            throw new IndexOutOfBoundsException(
+                "Column (Index: " + column + ", Size: " + matrix.length + ")."
+            );
+        }
+        List<T> columnElements = new ArrayList<>();
+        int rowCount = getRowCount();
+        for (int row = 0; row < rowCount; row++) {
+            columnElements.add(innerGet(column, row));
+        }
+        return columnElements;
+    }
 }

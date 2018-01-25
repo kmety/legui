@@ -74,6 +74,14 @@ public class GridLayout implements Layout {
         components.set(column, row, component);
     }
 
+    public List<Component> getRow(int row) {
+        return components.getRow(row);
+    }
+
+    public List<Component> getColumn(int column) {
+        return components.getColumn(column);
+    }
+
     private void checkConstraint(LayoutConstraint constraint) {
         if (constraint == null) {
             throw new IllegalArgumentException("Layout constraint cannot be null! "
