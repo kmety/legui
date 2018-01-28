@@ -7,6 +7,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import org.liquidengine.legui.layout.Layout;
+import org.liquidengine.legui.layout.LayoutConstraint;
 import org.liquidengine.legui.style.color.ColorConstants;
 import org.liquidengine.legui.component.event.scrollbar.ScrollBarChangeValueEvent;
 import org.liquidengine.legui.component.misc.listener.scrollbar.ScrollBarMouseClickEventListener;
@@ -161,6 +163,7 @@ public class ScrollBar extends Component {
      * Used to initialize listeners.
      */
     private void initialize() {
+        setLayout(new ScrollBarLayout());
         getListenerMap().addListener(ScrollEvent.class, new ScrollBarScrollListener());
         getListenerMap().addListener(MouseDragEvent.class, new ScrollBarMouseDragEventListener());
         getListenerMap().addListener(MouseClickEvent.class, new ScrollBarMouseClickEventListener());
@@ -479,5 +482,46 @@ public class ScrollBar extends Component {
             .toString();
     }
 
+    private static class ScrollBarLayout implements Layout {
+
+        /**
+         * Used to add component to layout.
+         *
+         * @param component component to add.
+         * @param constraint layout constraint.
+         *
+         * @throws IllegalArgumentException if provided constraint is not supported by this layout.
+         */
+        @Override
+        public void addComponent(Component component, LayoutConstraint constraint) throws IllegalArgumentException {
+
+        }
+
+        /**
+         * Used to remove component from layout.
+         *
+         * @param component component to remove.
+         */
+        @Override
+        public void removeComponent(Component component) {
+
+        }
+
+        /**
+         * Used to lay out child components for parent component.
+         *
+         * @param parent component to lay out.
+         */
+        @Override
+        public void layout(Component parent) {
+            if (parent instanceof ScrollBar) {
+                ScrollBar scrollBar = (ScrollBar) parent;
+                if (scrollBar.getViewport() != null) {
+                    Viewport viewport = scrollBar.getViewport();
+                    scrollBar.setVisibleAmount(viewport.getVisibleAmount(scrollBar.getOrientation()));
+                }
+            }
+        }
+    }
 
 }
