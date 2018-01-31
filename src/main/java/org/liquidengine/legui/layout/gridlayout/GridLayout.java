@@ -124,6 +124,10 @@ public class GridLayout implements Layout {
         int columnCount = matrix.size();
         int rowCount = matrix.get(0).size();
 
+        if (rowHeights.size() != rowCount || columnWidths.size() != columnCount) {
+            return;
+        }
+
         YGNodeStyleSetFlex(rootNode, YGDisplayFlex);
         YGNodeStyleSetFlexDirection(rootNode, YGFlexDirectionRow);
         YGNodeStyleSetWidth(rootNode, size.x);

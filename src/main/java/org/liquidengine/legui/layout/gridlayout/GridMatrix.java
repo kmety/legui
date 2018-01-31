@@ -2,6 +2,8 @@ package org.liquidengine.legui.layout.gridlayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by ShchAlexander on 23.01.2018.
@@ -9,7 +11,11 @@ import java.util.List;
 public class GridMatrix<T> {
 
     private static final int DEFAULT_INITIAL_CAPACITY = 1;
-    private Object[][] matrix;
+    private Lock lock = new ReentrantLock();
+
+    private Object[] mat;
+    private int columnCount;
+    private int rowCount;
 
     public GridMatrix(int columns, int rows) {
         if (columns < 0) {
@@ -18,7 +24,10 @@ public class GridMatrix<T> {
         if (rows < 0) {
             rows = DEFAULT_INITIAL_CAPACITY;
         }
-        matrix = new Object[columns][rows];
+
+        this.columnCount = columns;
+        this.rowCount = rows;
+        mat = new Object[columnCount * rowCount];
     }
 
     public GridMatrix() {
@@ -26,100 +35,139 @@ public class GridMatrix<T> {
     }
 
     public void addRow() {
-        Object[][] oldMatrix = matrix;
-        Object[][] newMatrix = new Object[oldMatrix.length][oldMatrix[0].length + 1];
+        doInLock(() -> {
+            int oldCC = columnCount;
+            int oldRC = rowCount;
 
-        for (int col = 0; col < oldMatrix.length; col++) {
-            for (int row = 0; row < oldMatrix[0].length; row++) {
-                newMatrix[col][row] = oldMatrix[col][row];
+            int newRC = oldRC + 1;
+
+            Object[] oldMat = mat;
+            Object[] newMat = new Object[oldCC * newRC];
+            for (int row = 0; row < oldRC; row++) {
+                for (int col = 0; col < oldCC; col++) {
+                    newMat[getIndex(col, row, oldCC, oldRC)] = oldMat[getIndex(col, row, oldCC, oldRC)];
+                }
             }
-        }
-        this.matrix = newMatrix;
+            this.mat = newMat;
+            this.rowCount = newRC;
+        });
     }
 
     public void addRow(int index) {
-        Object[][] oldMatrix = matrix;
-        Object[][] newMatrix = new Object[oldMatrix.length][oldMatrix[0].length + 1];
+        doInLock(() -> {
+            int oldCC = columnCount;
+            int oldRC = rowCount;
 
-        for (int col = 0; col < oldMatrix.length; col++) {
+            int newRC = oldRC + 1;
+
+            Object[] oldMat = mat;
+            Object[] newMat = new Object[oldCC * newRC];
             for (int row = 0; row < index; row++) {
-                newMatrix[col][row] = oldMatrix[col][row];
+                System.arraycopy(oldMat, row * oldCC, newMat, row * oldCC, oldCC);
             }
-            for (int row = index; row < oldMatrix[0].length; row++) {
-                newMatrix[col][row + 1] = oldMatrix[col][row];
+            for (int row = index; row < oldRC; row++) {
+                System.arraycopy(oldMat, row * oldCC, newMat, (row + 1) * oldCC, oldCC);
             }
-        }
-        this.matrix = newMatrix;
+            this.mat = newMat;
+            this.rowCount = newRC;
+        });
     }
 
     public void removeRow(int index) {
-        if (matrix.length > 1 && matrix[0].length > 1) {
+        doInLock(() -> {
+            if (this.columnCount > 0 && this.rowCount > 1) {
+                int oldCC = this.columnCount;
+                int oldRC = this.rowCount;
 
-            Object[][] oldMatrix = matrix;
-            Object[][] newMatrix = new Object[oldMatrix.length][oldMatrix[0].length - 1];
+                int newRC = oldRC - 1;
 
-            for (int col = 0; col < oldMatrix.length; col++) {
+                Object[] oldMat = mat;
+                Object[] newMat = new Object[oldCC * newRC];
                 for (int row = 0; row < index; row++) {
-                    newMatrix[col][row] = oldMatrix[col][row];
+                    System.arraycopy(oldMat, row * oldCC, newMat, row * oldCC, oldCC);
                 }
-                for (int row = index; row < newMatrix[0].length; row++) {
-                    newMatrix[col][row] = oldMatrix[col][row + 1];
+                for (int row = index; row < newRC; row++) {
+                    System.arraycopy(oldMat, (row + 1) * oldCC, newMat, row * oldCC, oldCC);
                 }
+                this.mat = newMat;
+                this.rowCount = newRC;
             }
-            this.matrix = newMatrix;
-        }
+        });
     }
 
     public void addColumn() {
-        Object[][] oldMatrix = matrix;
-        Object[][] newMatrix = new Object[oldMatrix.length + 1][oldMatrix[0].length];
+        doInLock(() -> {
+            int oldCC = columnCount;
+            int oldRC = rowCount;
 
-        for (int row = 0; row < oldMatrix[0].length; row++) {
-            for (int col = 0; col < oldMatrix.length; col++) {
-                newMatrix[col][row] = oldMatrix[col][row];
+            int newCC = oldCC + 1;
+
+            Object[] oldMat = mat;
+            Object[] newMat = new Object[newCC * oldRC];
+            for (int row = 0; row < oldRC; row++) {
+                System.arraycopy(oldMat, row * oldCC, newMat, row * newCC, oldCC);
             }
-        }
-        this.matrix = newMatrix;
+            this.mat = newMat;
+            this.columnCount = newCC;
+        });
     }
 
     public void addColumn(int index) {
-        Object[][] oldMatrix = matrix;
-        Object[][] newMatrix = new Object[oldMatrix.length + 1][oldMatrix[0].length];
+        doInLock(() -> {
+            int oldCC = columnCount;
+            int oldRC = rowCount;
 
-        for (int row = 0; row < oldMatrix[0].length; row++) {
-            for (int col = 0; col < index; col++) {
-                newMatrix[col][row] = oldMatrix[col][row];
+            int newCC = oldCC + 1;
+
+            Object[] oldMat = mat;
+            Object[] newMat = new Object[newCC * oldRC];
+            for (int row = 0; row < oldRC; row++) {
+                for (int col = 0; col < index; col++) {
+                    newMat[row * newCC + col] = oldMat[row * oldCC + col];
+                }
+                for (int col = index; col < oldCC; col++) {
+                    newMat[getIndex((col + 1), row, newCC, oldRC)] = oldMat[getIndex(col, row, oldCC, oldRC)];
+                }
             }
-            for (int col = index; col < oldMatrix.length; col++) {
-                newMatrix[col + 1][row] = oldMatrix[col][row];
-            }
-        }
-        this.matrix = newMatrix;
+            this.mat = newMat;
+            this.columnCount = newCC;
+        });
     }
 
     public void removeColumn(int index) {
-        if (matrix.length > 1 && matrix[0].length > 1) {
+        doInLock(() -> {
+            if (columnCount > 1 && rowCount > 0) {
+                int oldCC = columnCount;
+                int oldRC = rowCount;
 
-            Object[][] oldMatrix = matrix;
-            Object[][] newMatrix = new Object[oldMatrix.length - 1][oldMatrix[0].length];
+                int newCC = oldCC - 1;
 
-            for (int row = 0; row < oldMatrix[0].length; row++) {
-                for (int col = 0; col < index; col++) {
-                    newMatrix[col][row] = oldMatrix[col][row];
+                Object[] oldMat = mat;
+                Object[] newMat = new Object[newCC * oldRC];
+                for (int row = 0; row < oldRC; row++) {
+                    for (int col = 0; col < index; col++) {
+                        newMat[getIndex(col, row, newCC, oldRC)] = oldMat[getIndex(col, row, oldCC, oldRC)];
+                    }
+                    for (int col = index; col < newCC; col++) {
+                        newMat[getIndex(col, row, newCC, oldRC)] = oldMat[getIndex(col + 1, row, oldCC, oldRC)];
+                    }
                 }
-                for (int col = index; col < newMatrix.length; col++) {
-                    newMatrix[col][row] = oldMatrix[col + 1][row];
-                }
+                this.mat = newMat;
+                this.columnCount = newCC;
             }
-            this.matrix = newMatrix;
-        }
+        });
     }
 
     public T set(int column, int row, T value) {
-        check(column, row);
-        T t = get(column, row);
-        matrix[column][row] = value;
-        return t;
+        lock.lock();
+        try {
+            check(column, row);
+            T t = get(column, row);
+            mat[getIndex(column, row, columnCount, rowCount)] = value;
+            return t;
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
@@ -130,109 +178,144 @@ public class GridMatrix<T> {
      * @return true if added.
      */
     public boolean add(T object) {
-        if (object != null) {
-            int columnCount = getColumnCount();
-            int rowCount = getRowCount();
-            for (int row = 0; row < rowCount; row++) {
-                for (int col = 0; col < columnCount; col++) {
-                    if (matrix[col][row] == null) {
-                        matrix[col][row] = object;
-                        return true;
+        lock.lock();
+        try {
+            if (object != null) {
+                int columnCount = getColumnCount();
+                int rowCount = getRowCount();
+                for (int row = 0; row < rowCount; row++) {
+                    for (int col = 0; col < columnCount; col++) {
+                        if (mat[getIndex(col, row, columnCount, rowCount)] == null) {
+                            mat[getIndex(col, row, columnCount, rowCount)] = object;
+                            return true;
+                        }
                     }
                 }
             }
+            return false;
+        } finally {
+            lock.unlock();
         }
-        return false;
     }
 
     public T remove(int column, int row) {
-        check(column, row);
-        T t = get(column, row);
-        matrix[column][row] = null;
-        return t;
+        lock.lock();
+        try {
+            check(column, row);
+            T t = get(column, row);
+            mat[getIndex(column, row, columnCount, rowCount)] = null;
+            return t;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public boolean remove(T object) {
-        if (object != null) {
-            int columnCount = getColumnCount();
-            int rowCount = getRowCount();
-            for (int col = 0; col < columnCount; col++) {
+        lock.lock();
+        try {
+            if (object != null) {
                 for (int row = 0; row < rowCount; row++) {
-                    if (object.equals(matrix[col][row])) {
-                        matrix[col][row] = null;
-                        return true;
+                    for (int col = 0; col < columnCount; col++) {
+                        int index = getIndex(col, row, columnCount, rowCount);
+                        if (object.equals(mat[index])) {
+                            mat[index] = null;
+                            return true;
+                        }
                     }
                 }
             }
+            return false;
+        } finally {
+            lock.unlock();
         }
-        return false;
     }
 
     private void check(int column, int row) {
-        if (column > matrix.length || row > matrix[0].length) {
+        if (column > columnCount || row > rowCount) {
             throw new IndexOutOfBoundsException(
-                "Column (Index: " + column + ", Size: " + matrix.length + ")," +
-                    "Row (Index: " + row + ", Size: " + matrix[0].length + ")."
+                "Column (Index: " + column + ", Size: " + columnCount + ")," +
+                    "Row (Index: " + row + ", Size: " + rowCount + ")."
             );
         }
     }
 
     public void removeAll() {
-        for (int row = 0; row < matrix[0].length; row++) {
-            for (int col = 0; col < matrix.length; col++) {
-                matrix[col][row] = null;
+        lock.lock();
+        try {
+            for (int row = 0; row < columnCount; row++) {
+                for (int col = 0; col < rowCount; col++) {
+                    mat[getIndex(col, row, columnCount, rowCount)] = null;
+                }
             }
+        } finally {
+            lock.unlock();
         }
     }
 
     public T get(int column, int row) {
-        check(column, row);
-        return innerGet(column, row);
+        lock.lock();
+        try {
+            check(column, row);
+            return innerGet(column, row);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @SuppressWarnings("unchecked")
     private T innerGet(int column, int row) {
-        return (T) matrix[column][row];
+        return (T) mat[getIndex(column, row, columnCount, rowCount)];
     }
 
     public int getColumnCount() {
-        return matrix.length;
+        return columnCount;
     }
 
     public int getRowCount() {
-        return matrix[0].length;
+        return rowCount;
     }
 
     public List<List<T>> getMatrix() {
-        List<List<T>> matrixL = new ArrayList<>();
-        for (Object[] objects : matrix) {
-            List<T> e = new ArrayList<>();
-            for (Object object : objects) {
-                e.add((T) object);
+        lock.lock();
+        try {
+            List<List<T>> matrixL = new ArrayList<>();
+            for (int col = 0; col < columnCount; col++) {
+                List<T> e = new ArrayList<>();
+                for (int row = 0; row < rowCount; row++) {
+                    int index = getIndex(col, row, columnCount, rowCount);
+                    e.add((T) mat[index]);
+                }
+                matrixL.add(e);
             }
-            matrixL.add(e);
+            return matrixL;
+        } finally {
+            lock.unlock();
         }
-        return matrixL;
     }
 
     public List<T> getRow(int row) {
-        if (row > matrix[0].length) {
-            throw new IndexOutOfBoundsException(
-                "Row (Index: " + row + ", Size: " + matrix[0].length + ")."
-            );
+        lock.lock();
+        try {
+            if (row > rowCount) {
+                throw new IndexOutOfBoundsException(
+                    "Row (Index: " + row + ", Size: " + rowCount + ")."
+                );
+            }
+            List<T> rowElements = new ArrayList<>();
+            int columnCount = getColumnCount();
+            for (int column = 0; column < columnCount; column++) {
+                rowElements.add(innerGet(column, row));
+            }
+            return rowElements;
+        } finally {
+            lock.unlock();
         }
-        List<T> rowElements = new ArrayList<>();
-        int columnCount = getColumnCount();
-        for (int column = 0; column < columnCount; column++) {
-            rowElements.add(innerGet(column, row));
-        }
-        return rowElements;
     }
 
     public List<T> getColumn(int column) {
-        if (column > matrix.length) {
+        if (column > columnCount) {
             throw new IndexOutOfBoundsException(
-                "Column (Index: " + column + ", Size: " + matrix.length + ")."
+                "Column (Index: " + column + ", Size: " + columnCount + ")."
             );
         }
         List<T> columnElements = new ArrayList<>();
@@ -241,5 +324,22 @@ public class GridMatrix<T> {
             columnElements.add(innerGet(column, row));
         }
         return columnElements;
+    }
+
+
+    private void doInLock(Runnable r) {
+        if (r == null) {
+            return;
+        }
+        lock.lock();
+        try {
+            r.run();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private int getIndex(int column, int row, int columnCount, int rowCount) {
+        return row * columnCount + column;
     }
 }

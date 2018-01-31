@@ -74,7 +74,7 @@ public abstract class Demo {
 
   private Renderer renderer;
   private EventProcessor leguiEventProcessors;
-  private CallbackKeeper keeper;
+  protected CallbackKeeper keeper;
   private SystemEventProcessor systemEventProcessor;
   private GLCapabilities glCapabilities;
 
@@ -202,7 +202,6 @@ public abstract class Demo {
     window = glfwCreateWindow(width, height, title, NULL, NULL);
     glfwSetWindowPos(window, 50, 50);
     glfwShowWindow(window);
-    createGuiElements(frame, width, height);
 
     context = new Context(window);
     keeper = new DefaultCallbackKeeper();
@@ -214,6 +213,7 @@ public abstract class Demo {
     systemEventProcessor = new SystemEventProcessor();
     systemEventProcessor.addDefaultCallbacks(keeper);
 
+    createGuiElements(frame, width, height);
     running = true;
   }
 
